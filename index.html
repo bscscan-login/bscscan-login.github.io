@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>BscScan™ | BNB chain index with crypto, coin and BEP coverage</title>
+    <meta
+      name="description"
+      content="scScan price chart notes across BNB Smart Chain mint pages with base-fee observation window, validator rotation scan, and verified-source BEP badges."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --nav: #142b46;
+        --blue: #0784e8;
+        --link: #0784e8;
+        --bg: #f5f7fa;
+        --border: #e3e8ef;
+        --muted: #6b7b8c;
+        --green: #16a673;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        font:
+          14px Arial,
+          Helvetica,
+          sans-serif;
+        color: #25364a;
+      }
+      header {
+        background: var(--nav);
+        color: #fff;
+      }
+      .top {
+        max-width: 1200px;
+        margin: auto;
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .brand {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.2px;
+      }
+      .brand span {
+        color: #55b5ff;
+      }
+      .nav {
+        display: flex;
+        gap: 22px;
+        font-size: 13px;
+        color: #d9e5f2;
+      }
+      main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 25px 22px;
+      }
+      .hero {
+        background: linear-gradient(120deg, #173858, #214d75);
+        border-radius: 9px;
+        color: #fff;
+        padding: 28px;
+        margin-bottom: 22px;
+      }
+      .hero h1 {
+        margin: 0 0 10px;
+        font-size: 24px;
+      }
+      .hero p {
+        color: #d7e8f7;
+        margin: 0 0 20px;
+      }
+      .search {
+        display: flex;
+        max-width: 800px;
+        background: white;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .search input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        padding: 14px;
+        font-size: 14px;
+        outline: none;
+      }
+      .search button {
+        background: var(--blue);
+        border: 0;
+        color: white;
+        padding: 0 22px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 22px;
+      }
+      .card,
+      .panel {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 17px;
+      }
+      .card small {
+        color: var(--muted);
+      }
+      .metric {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 9px;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 7px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .panel {
+        padding: 0;
+        overflow: hidden;
+      }
+      .panel h2 {
+        margin: 0;
+        padding: 16px 18px;
+        font-size: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .panel .content {
+        padding: 0 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      th {
+        text-align: left;
+        color: #697a8d;
+        font-weight: 600;
+        border-bottom: 1px solid var(--border);
+        padding: 13px 8px;
+      }
+      td {
+        padding: 13px 8px;
+        border-bottom: 1px solid #edf1f5;
+        vertical-align: top;
+      }
+      a {
+        color: var(--link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .mono {
+        font-family: monospace;
+      }
+      .badge {
+        background: #e8f7ef;
+        color: #13835b;
+        padding: 4px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+      }
+      .foot {
+        color: var(--muted);
+        text-align: center;
+        padding: 25px;
+        font-size: 12px;
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+        padding: 14px 18px;
+      }
+      @media (max-width: 800px) {
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .nav {
+          display: none;
+        }
+        .top {
+          padding: 14px;
+        }
+      }
+      @media (max-width: 480px) {
+        main {
+          padding: 15px 10px;
+        }
+        .hero {
+          padding: 20px;
+        }
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .metric {
+          font-size: 18px;
+        }
+        .panel table {
+          min-width: 500px;
+        }
+        .panel .content {
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="top">
+        <div class="brand">
+          <i class="fa-solid fa-cubes"></i> <span>BNB</span> Chain Explorer
+        </div>
+        <nav class="nav">
+          <span>Blockchain</span><span>Tokens</span><span>NFTs</span
+          ><span>Validators</span><span>Resources</span>
+        </nav>
+        <div><i class="fa-solid fa-globe"></i> BNB Smart Chain</div>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <h1>BNB Smart Chain Explorer</h1>
+        <p>Search blockchain transactions, addresses, blocks and tokens</p>
+        <form class="search" id="searchForm">
+          <input
+            id="query"
+            placeholder="Search by Address / Txn Hash / Block / Token"
+            aria-label="Search blockchain"
+          /><button type="submit"><i class="fa fa-search"></i> Search</button>
+        </form>
+      </section>
+      <section class="cards">
+        <div class="card">
+          <small><i class="fa-solid fa-cube"></i> Latest Block</small>
+          <div class="metric" id="block">Loading…</div>
+          <div class="sub">BNB Smart Chain</div>
+        </div>
+        <div class="card">
+          <small><i class="fa-solid fa-gas-pump"></i> Gas Price</small>
+          <div class="metric" id="gas">Loading…</div>
+          <div class="sub">Gwei</div>
+        </div>
+        <div class="card">
+          <small><i class="fa-brands fa-bnb"></i> BNB Price</small>
+          <div class="metric" id="price">--</div>
+          <div class="sub">External market feed</div>
+        </div>
+        <div class="card">
+          <small><i class="fa-solid fa-link"></i> Network</small>
+          <div class="metric"><span class="badge">Connected</span></div>
+          <div class="sub">Chain ID 56 · Mainnet</div>
+        </div>
+      </section>
+      <div class="layout">
+        <section class="panel">
+          <h2>Latest Blocks</h2>
+          <div class="content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Block</th>
+                  <th>Age</th>
+                  <th>Txns</th>
+                  <th>Miner</th>
+                </tr>
+              </thead>
+              <tbody id="blocks">
+                <tr>
+                  <td colspan="4">Loading data…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note">
+            Block data retrieved from public BNB Chain RPC.
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Latest Transactions</h2>
+          <div class="content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Txn Hash</th>
+                  <th>Age</th>
+                  <th>From / To</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody id="txs">
+                <tr>
+                  <td colspan="4">Loading data…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note">
+            Transaction data retrieved from public BNB Chain RPC.
+          </div>
+        </section>
+      </div>
+      <div class="foot">
+        Explorer-style demo interface · Data is fetched from public sources and
+        may be delayed or unavailable. <br />Inspired by BscScan design
+        patterns; not affiliated with BscScan.
+      </div>
+    </main>
+    <script>
+      const rpc = "https://bsc-dataseed.binance.org/";
+      async function call(method, params = []) {
+        const r = await fetch(rpc, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+        });
+        if (!r.ok) throw Error("RPC unavailable");
+        const j = await r.json();
+        if (j.error) throw Error(j.error.message);
+        return j.result;
+      }
+      const short = (x) => (x ? x.slice(0, 10) + "…" + x.slice(-6) : "—");
+      function age(ts) {
+        let s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
+        return s < 60
+          ? s + " secs ago"
+          : s < 3600
+            ? Math.floor(s / 60) + " mins ago"
+            : Math.floor(s / 3600) + " hrs ago";
+      }
+      async function load() {
+        try {
+          const bn = await call("eth_blockNumber");
+          const num = parseInt(bn, 16);
+          document.getElementById("block").textContent = num.toLocaleString();
+          const gp = await call("eth_gasPrice");
+          document.getElementById("gas").textContent = (
+            parseInt(gp, 16) / 1e9
+          ).toFixed(2);
+          const blockObjs = await Promise.all(
+            Array.from({ length: 5 }, (_, i) =>
+              call("eth_getBlockByNumber", [
+                "0x" + (num - i).toString(16),
+                true,
+              ]),
+            ),
+          );
+          document.getElementById("blocks").innerHTML = blockObjs
+            .map(
+              (b) =>
+                `<tr><td><a href="https://bscscan.com/block/${parseInt(b.number, 16)}">${parseInt(b.number, 16).toLocaleString()}</a></td><td>${age(parseInt(b.timestamp, 16))}</td><td>${b.transactions.length}</td><td><a class="mono" href="https://bscscan.com/address/${b.miner}">${short(b.miner)}</a></td></tr>`,
+            )
+            .join("");
+          const txs = blockObjs.flatMap((b) => b.transactions).slice(0, 8);
+          document.getElementById("txs").innerHTML = txs
+            .map(
+              (t) =>
+                `<tr><td><a class="mono" href="https://bscscan.com/tx/${t.hash}">${short(t.hash)}</a></td><td>${age(parseInt(blockObjs[0].timestamp, 16))}</td><td><a class="mono" href="https://bscscan.com/address/${t.from}">${short(t.from)}</a><br><a class="mono" href="https://bscscan.com/address/${t.to || ""}">${short(t.to || "Contract creation")}</a></td><td>${(parseInt(t.value, 16) / 1e18).toFixed(5)} BNB</td></tr>`,
+            )
+            .join("");
+        } catch (e) {
+          document.getElementById("block").textContent = "Unavailable";
+          document.getElementById("gas").textContent = "Unavailable";
+          document.getElementById("blocks").innerHTML =
+            '<tr><td colspan="4">RPC data could not be loaded. Please try refreshing.</td></tr>';
+          document.getElementById("txs").innerHTML =
+            '<tr><td colspan="4">Data unavailable</td></tr>';
+          console.warn(e);
+        }
+      }
+      document.getElementById("searchForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        let q = document.getElementById("query").value.trim();
+        if (!q) return;
+        window.open(
+          "https://bscscan.com/search?search=" + encodeURIComponent(q),
+          "_blank",
+          "noopener",
+        );
+      });
+      async function price() {
+        try {
+          let r = await fetch(
+            "https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd",
+          );
+          let j = await r.json();
+          document.getElementById("price").textContent =
+            "$" + j.binancecoin.usd.toLocaleString();
+        } catch {}
+      }
+      load();
+      price();
+      setInterval(load, 15000);
+      setInterval(price, 60000);
+    </script>
+  </body>
+</html>
